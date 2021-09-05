@@ -1,9 +1,10 @@
 import pandas as pd
 import sys
+from datetime import datetime
 
 """
     This script will calculate the average milage for a given strava "activities.csv" export
-    The average milage will be per week, over the last 5 weeks
+    The average milage will be per week, over the last 8 weeks
 """
 
 fields = ["Activity Date", "Distance"]
@@ -30,14 +31,18 @@ except:
     # Ye this is apparently not recommended but it doesn't quit the Idle shell on my Windows box so...
     raise SystemExit
 
-# Collect distances within the last 5 weeks
+# Collect distances within the last 8 weeks
 
 
 for index, row in activitiesDF.iterrows():
 
-    date = str(row["Activity Date"])
+    dateStr = str(row["Activity Date"])
     distance = float(row["Distance"]) / 1.609
-    distanceFm = "{:.2f}". format(distance) 
+    distanceFm = "{:.2f}". format(distance)
 
-    print("%s: %s miles" % (date, distanceFm))
+    print("%s: %s miles" % (dateStr, distanceFm))
 
+    
+
+    datetimeObj = datetime.strptime(dateStr, '%b %d, %Y, %I:%M:%S %p')
+    print(datetimeObj)
