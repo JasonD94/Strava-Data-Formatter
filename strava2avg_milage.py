@@ -11,7 +11,7 @@ from datetime import timedelta
     TODO: then figure out the average for various week periods, like 2 vs 4 vs 8 vs 20 weeks
 """
 
-fields = ["Activity Date", "Distance"]
+fields = ["Activity Date", "Distance", "Activity Type"]
 
 filePth = None
 
@@ -49,11 +49,15 @@ for index, row in activitiesDF.iterrows():
     distance = float(row["Distance"]) / 1.609
     distanceFm = "{:.2f}". format(distance)
 
+    # DON'T FORGET TO FILTER OUT NON-RIDE ACTIVITIES!
+    # Otherwise stuff like hiking/kayaking/walking/etc will get counted!
+    activityType = str(row["Activity Type"])
+
     # Parse datetime
     datetimeObj = datetime.strptime(dateStr, '%b %d, %Y, %I:%M:%S %p')
 
-    # If datetime is in the past 8 weeks range, sum up it's milage
-    if datetimeObj > dtEight:
+    # If datetime is in the past 8 weeks range, and it's a ride type activity, sum up it's milage
+    if datetimeObj > dtEight and activityType == "Ride":
 
         milageSum += float(distanceFm)
 
